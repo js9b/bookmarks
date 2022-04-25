@@ -12,8 +12,8 @@
             <div class="row" v-for="a in types">                
                 <div v-for="b in bookmarks">                  
                     <div v-if="b.type==a" class="btn" @click="openSite(b.url)">
-                        <div class="png" v-if="b.icon"><img :src="b.icon" alt="Cannot load image."></div>
-                        <div class="png" v-else><img :src="b.url+'favicon.ico'" alt="Cannot load image."></div>
+                        <div class="png" v-if="b.icon"><img :src="b.icon" alt="Can't load image."></div>
+                        <div class="png" v-else><img :src="b.url+'favicon.ico'" alt="Can't load image."></div>
                         <div class="name" v-if="labels">{{b.name}}</div>
                         <div class="deleter" v-if="ed">
                             <img class="xsign" @click="deletes(b.url)" src="https://cutewallpaper.org/21/red-x-transparent-background-gif/Free-Red-X-Transparent-Png-Download-Free-Clip-Art-Free-.png" alt="X">
@@ -21,12 +21,8 @@
                     </div>                        
                 </div>                 
             </div>                                 
-        </div>  
-        <div class="option" id="edit" :class="{active: ed}" @click="edit()">
-            <div v-if="ed">Save</div>
-            <div v-else>Edit</div>
-        </div>
-        <div id="hidePanel" v-if="ed">        
+        </div>          
+        <div id="hidePanel" v-if="ed"> </div>       
         <div id="panel" v-if="ed">                    
             <div class="option"><input type="text" class="inputs" placeholder="Name" v-model="iname"></div>
             <div class="option"><input type="text" class="inputs" placeholder="URL" v-model="iurl"></div>
@@ -34,8 +30,11 @@
             <div class="option"><input type="text" class="inputs" placeholder="Type" v-model="itype"></div>  
             <div class="option" :class="{active: iname && iurl}"@click="add">Add site</div>
             <div class="option" :class="{active: labels}" @click="tgl()">Labels</div>  
-        </div>          
-    </div>
+        </div>                  
+        <div class="option" id="edit" :class="{active: ed}" @click="edit()">
+            <div v-if="ed">Save</div>
+            <div v-else>Edit</div>
+        </div>
     <script src="src/js/sites.js"></script>
 </body>
 </html>
