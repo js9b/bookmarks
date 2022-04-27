@@ -8,10 +8,21 @@ const sites = Vue.createApp({
         iicon: "" ,
         itype: null,
         bookmarks: [],
-        types: []
+        types: [],
+        addSite: "Add site",
+        bx: null,
+        disabled: false
       }      
     },
     methods: {
+        clr(){
+            this.iname= ""
+            this.iurl= ""
+            this.iicon= "" 
+            this.itype= ""
+            this.addSite="Add site"
+            this.disabled= false
+        },        
         setMem(){           
             if (this.bookmarks[0])localStorage.setItem('books', JSON.stringify(this.bookmarks))
             localStorage.setItem('lb', this.labels);
@@ -27,39 +38,62 @@ const sites = Vue.createApp({
             }            
         },
         add(){
-            if (this.iname && this.iurl ){
-                let obj = {
-                    "name":this.iname,
-                    "url":this.iurl,
-                    "icon":this.iicon,
-                    "type":this.itype
-                }                
-                this.bookmarks.push(obj)
+            if(this.addSite=="Update site"){
+                this.bookmarks[this.bx].type=this.itype
+                this.bookmarks[this.bx].name=this.iname
+                this.bookmarks[this.bx].icon=this.iicon
+                // console.log(this.bookmarks, this.bx)
                 this.chechTypes()
+            }else{
+                if (this.iurl ){
+                    if(!this.iname){
+                        nohttp=this.iurl.split("://")[1]
+                        if(nohttp.split(".")[0]=="www")title=this.iname.split(".")[1]
+                        else this.iname = nohttp.split(".")[0]
+                    }
+                    // if(!this.iicon){
+                    //     short=this.iurl.split("/")
+                    // }
+                    let obj = {
+                        "name":this.iname,
+                        "url":this.iurl,
+                        "icon":this.iicon,
+                        "type":this.itype
+                    }                
+                    this.bookmarks.push(obj)
+                    this.chechTypes()
+                }
             }
         },
         tgl(){
             this.labels=!this.labels
+        },openSite(vurl, bookmarksIndex){
+            if(!this.ed) window.open(vurl, '_blank').focus();
+            else {
+                this.addSite="Update site"
+                this.bx=bookmarksIndex
+                this.iurl = vurl
+                this.iicon = this.bookmarks[this.bx].icon
+                this.iname = this.bookmarks[this.bx].name
+                this.itype = this.bookmarks[this.bx].type
+                // console.log(this.bx)
+                this.disabled=true
+            }
         },
-        deletes(what){            
-            for(i = 0; i<this.bookmarks.length;i++){
-                if (this.bookmarks[i].url==what) {
-                    this.bookmarks.splice(i, 1)
-                    break
-                }
-            }           
-        },
+        deletes(bookmarksIndex){
+            setTimeout(() => {
+                this.bookmarks.splice(bookmarksIndex, 1) 
+                this.addSite= "Add site",        
+                this.disabled= false
+            }, 20)  
+        },        
         edit(){
             this.ed=!this.ed
             if (!this.ed) {
                 this.setMem()
             }
             this.readMem()
-        },
-        openSite(vurl){
-            if(!this.ed) window.open(vurl, '_blank').focus();
-            console.log(vurl)
-        },
+        },        
         chechTypes(){            
             arr=[]
             for (i=0; i<this.bookmarks.length; i++){
