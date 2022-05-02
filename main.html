@@ -25,7 +25,7 @@
         <div id="hidePanel" v-if="ed"> </div>       
         <div id="panel" v-if="ed">                   
             <div class="option" :class="{blocked: disabled}">
-                <input type="text" class="inputs" placeholder="URL" :disabled="disabled" v-model="iurl">
+                <input type="text" class="inputs" required placeholder="URL" :disabled="disabled" v-model="iurl">
             </div>
             <div class="option"><input type="text" class="inputs" placeholder="Name" v-model="iname"></div>
             <div class="option"><input type="text" class="inputs" placeholder="Icon URL" v-model="iicon"></div>
@@ -33,8 +33,9 @@
             <div class="option" style="background-color: tomato; "@click="clr()">Clear</div>  
             <div class="option" :class="{active: iurl}"@click="add">{{addSite}}</div>
             <div class="option" :class="{active: labels}" @click="tgl()">Labels</div>
-            <!-- <div class="option" >Import</div> -->
-            <!-- <div class="option" @click="dld()">Export</div>   -->
+            <div class="option">
+                <input type="range" v-model="size" @input="sizUpdate()" min="1" max="20">
+            </div>
         </div>                  
         <div class="option" id="edit" :class="{active: ed}" @click="edit()">
             <div v-if="ed">Save</div>

@@ -11,10 +11,20 @@ const sites = Vue.createApp({
         types: [],
         addSite: "Add site",
         bx: null,
-        disabled: false
+        disabled: false,
+        size: 10,
       }      
     },
     methods: {
+        sizUpdate(){
+            if(this.size>20)this.size=20
+            if(this.size<1)this.size=1
+            var r = document.querySelector(':root');
+            base=90+this.size*6       
+            r.style.setProperty('--wh', base+'px');
+            r.style.setProperty('--whimg', 0.8*base-10+'px');
+            r.style.setProperty('--fs',13+ this.size/3+'px');
+        },
         clr(){
             this.iname= ""
             this.iurl= ""
@@ -26,13 +36,16 @@ const sites = Vue.createApp({
         setMem(){           
             if (this.bookmarks[0])localStorage.setItem('books', JSON.stringify(this.bookmarks))
             localStorage.setItem('lb', this.labels);
+            localStorage.setItem('siz', this.size);
         },
         readMem(){    
             if (localStorage.getItem('books')){
-                this.labels=JSON.parse(localStorage.getItem('lb'))      
+                this.labels=JSON.parse(localStorage.getItem('lb')) 
+                this.size=JSON.parse(localStorage.getItem('siz'))        
                 x = localStorage.getItem('books')
                 this.bookmarks=JSON.parse(x)
                 this.chechTypes()
+                this.sizUpdate()
             }else{
                 this.ed=true
             }            
@@ -42,7 +55,6 @@ const sites = Vue.createApp({
                 this.bookmarks[this.bx].type=this.itype
                 this.bookmarks[this.bx].name=this.iname
                 this.bookmarks[this.bx].icon=this.iicon
-                // console.log(this.bookmarks, this.bx)
                 this.chechTypes()
             }else{
                 if (this.iurl ){
@@ -50,10 +62,7 @@ const sites = Vue.createApp({
                         nohttp=this.iurl.split("://")[1]
                         if(nohttp.split(".")[0]=="www")title=this.iname.split(".")[1]
                         else this.iname = nohttp.split(".")[0]
-                    }
-                    // if(!this.iicon){
-                    //     short=this.iurl.split("/")
-                    // }
+                    }                    
                     let obj = {
                         "name":this.iname,
                         "url":this.iurl,
@@ -76,7 +85,6 @@ const sites = Vue.createApp({
                 this.iicon = this.bookmarks[this.bx].icon
                 this.iname = this.bookmarks[this.bx].name
                 this.itype = this.bookmarks[this.bx].type
-                // console.log(this.bx)
                 this.disabled=true
             }
         },
