@@ -2,4 +2,4 @@
 Just for storing bookmarks 
 
 Created with Vue.js, non hosted.
-Run index.html and add your bookmarks.
+Run main.html and add your bookmarks.
