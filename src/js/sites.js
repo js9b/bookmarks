@@ -60,7 +60,7 @@ const sites = Vue.createApp({
                 if (this.iurl ){
                     if(!this.iname){
                         nohttp=this.iurl.split("://")[1]
-                        if(nohttp.split(".")[0]=="www")title=this.iname.split(".")[1]
+                        if(nohttp.split(".")[0]=="www")this.iname=nohttp.split(".")[1]
                         else this.iname = nohttp.split(".")[0]
                     }                    
                     let obj = {
